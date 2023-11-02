@@ -21,15 +21,12 @@ jobs:
     - name: checkout source code
       uses: actions/checkout@v3
     ###################################################
-    - name: get set version
-      run: ver=$(cat version)
-      
     - name: build
-      run: docker build -t seongdong/nginx-test:$ver .
+      run: docker build -t seongdong/nginx-test:$(cat version) .
 
     - name: Login to Docker
       run: docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PW }}
 
     - name: Push to Docker
-      run: docker push seongdong/nginx-test:0.2
+      run: docker push seongdong/nginx-test:$(cat version)
       
