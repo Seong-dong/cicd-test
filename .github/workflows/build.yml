@@ -50,7 +50,7 @@ jobs:
       run: |
         cicd-test-cd/overlays/dev/
         kustomize edit set image seongdong/nginx-test:${{ steps.img-ver.outputs.TAG_NAME }}
-        cat kustomization.yaml
+        #        cat kustomization.yaml
 
     - name: Commit files
       run: |
