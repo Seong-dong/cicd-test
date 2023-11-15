@@ -27,11 +27,35 @@ jobs:
         echo "TAG_NAME=$(cat version)" >> $GITHUB_OUTPUT
     - name: build
       run: docker build -t seongdong/nginx-test:${{ steps.img-ver.outputs.TAG_NAME  }} .
-        #run: docker build -t seongdong/nginx-test:$(cat version) .
 
     - name: Login to Docker
       run: docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PW }}
 
     - name: Push to Docker
       run: docker push seongdong/nginx-test:${{ steps.img-ver.outputs.TAG_NAME  }}
-        #run: docker push seongdong/nginx-test:$(cat version)
+
+    ### pre cd
+     - name: Setup Kustomize
+      uses: imranismail/setup-kustomize@v1
+
+    - name: Checkout kustomize repository
+      uses: actions/checkout@v2
+      with:
+        repository: "Seong-dong/cicd-test-cd"
+        ref: main
+        token: ${{ secrets.ACTION_TOKEN }}
+        path: cicd-test-cd
+
+    - name: Update Kubernetes resources
+      run: |
+        cd cicd-test-cd/overlays/dev/
+        kustomize edit set image seongdong/nginx-test:\${{ steps.img-ver.outputs.TAG_NAME }}
+        cat kustomization.yaml
+
+    - name: Commit files
+      run: |
+        cd cicd-test-cd
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "github-actions"
+        git commit -am "Update image tag"
+        git push -u origin main
