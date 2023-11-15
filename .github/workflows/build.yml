@@ -35,7 +35,7 @@ jobs:
       run: docker push seongdong/nginx-test:${{ steps.img-ver.outputs.TAG_NAME  }}
 
     ### pre cd
-     - name: Setup Kustomize
+    - name: Setup Kustomize
       uses: imranismail/setup-kustomize@v1
 
     - name: Checkout kustomize repository
