@@ -11,10 +11,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.8]
+#    strategy:
+#      max-parallel: 4
+#      matrix:
+#        python-version: [3.8]
 
     steps:
     # git에서 설정한 비공개 변수
