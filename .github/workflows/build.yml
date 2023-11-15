@@ -21,12 +21,17 @@ jobs:
     - name: checkout source code
       uses: actions/checkout@v3
     ###################################################
+    - name: get-version
+      id: image-version
+      run: echo "version=$(cat version)" >> $GITHUB_OUTPUT
     - name: build
-      run: docker build -t seongdong/nginx-test:$(cat version) .
+      id: image-version
+      run: docker build -t seongdong/nginx-test:${{ step.image-version.outputs.version  }} .
+        #run: docker build -t seongdong/nginx-test:$(cat version) .
 
     - name: Login to Docker
       run: docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PW }}
 
     - name: Push to Docker
-      run: docker push seongdong/nginx-test:$(cat version)
-      
+      run: docker push seongdong/nginx-test:${{ step.image-version.outputs.version  }}
+        #run: docker push seongdong/nginx-test:$(cat version)
