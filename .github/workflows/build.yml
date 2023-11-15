@@ -48,8 +48,8 @@ jobs:
 
     - name: Update Kubernetes resources
       run: |
-        cd cicd-test-cd/overlays/dev/
-        kustomize edit set image seongdong/nginx-test:\${{ steps.img-ver.outputs.TAG_NAME }}
+        cicd-test-cd/overlays/dev/
+        kustomize edit set image seongdong/nginx-test:${{ steps.img-ver.outputs.TAG_NAME }}
         cat kustomization.yaml
 
     - name: Commit files
